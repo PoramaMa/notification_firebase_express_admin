@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" type="module"></script>
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Avenir, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        nav {
+            padding: 30px;
+        }
+
+        nav a {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        nav a.router-link-exact-active {
+            color: #42b983;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Notification</h1>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-messaging.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8xEkwCjSANpJ9GFCRo7SLy1qZNMELXfY",
+            authDomain: "winbot-notification-web.firebaseapp.com",
+            projectId: "winbot-notification-web",
+            storageBucket: "winbot-notification-web.appspot.com",
+            messagingSenderId: "505262003896",
+            appId: "1:505262003896:web:0418834024a20361d0864d",
+            measurementId: "G-FMGXG82PEY"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const messaging = getMessaging(app);
+
+        navigator.serviceWorker.register("firebase-messaging-sw.js").then((registration => {
+            getToken(messaging, {
+                serviceWorkerRegistration: registration,
+                vapidKey: "BBv_NQrHBauLtMXmMSG_VhhliwWggvhC8V8swTK6xO7ZosCzMjxY9j2l09cIXuR3dAV1nz77he4AtGZCLC_RYu4"
+            })
+                .then((currentToken) => {
+                    if (currentToken) {
+                        console.log("currentToken :: ", currentToken);
+                    } else {
+                        console.log(
+                            "No registration token available. Request permission to generate one."
+                        );
+                    }
+                })
+                .catch((err) => {
+                    console.log("An error occurred while retrieving token. ", err);
+                });
+        }))
+
+    </script>
+</body>
+
+</html>
